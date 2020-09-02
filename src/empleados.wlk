@@ -12,17 +12,26 @@ object galvan {
 
 object baigorria  {
 	var sueldo = 0
+	var totalSueldo = 0
 	
 	method sueldo() {
 		return (sueldo)
 	}
 	
 	method sueldo(nuevoSueldo) {
-		sueldo = nuevoSueldo
+		sueldo = sueldo + nuevoSueldo
 	}
 	
 	method vender(cantidad) {
 		gimenez.fondo(cantidad * 15) ; gimenez.empanadasVendidas(cantidad * 15)
+	} 
+	
+	method totalCobrado() {
+		return totalSueldo
+	}
+	
+	method totalSueldo(sueldoNuevo) {
+		totalSueldo = totalSueldo + sueldoNuevo
 	}
 }
 
@@ -47,7 +56,8 @@ object gimenez {
 			galvan.sueldo(20000); fondo -= 20000
 		}
 		else {
-			baigorria.sueldo(empanadasVendidas); fondo -= empanadasVendidas
+			baigorria.sueldo(empanadasVendidas); baigorria.totalSueldo(empanadasVendidas) ;
+			fondo -= empanadasVendidas; empanadasVendidas -=empanadasVendidas
 		}
 	}
 }
