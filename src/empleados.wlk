@@ -1,5 +1,6 @@
 object galvan {
-	var sueldo = 15000
+	var sueldo = 0
+	var deuda = 0
 	
 	method sueldo() {
 		return (sueldo)
@@ -8,30 +9,41 @@ object galvan {
 	method sueldo(nuevoSueldo) {
 		sueldo = nuevoSueldo
 	}
+	
+	method gastar(monto) {
+		if (monto > sueldo) {
+			sueldo = (sueldo - monto).abs(); deuda += sueldo; sueldo -= sueldo
+		}
+		else {sueldo -= monto}
+	}
+	
+	method deuda() {
+		return deuda
+	}
 }  
 
 object baigorria  {
 	var sueldo = 0
-	var totalSueldo = 0
+	var totalCobrado = 0
 	
 	method sueldo() {
 		return (sueldo)
 	}
 	
 	method sueldo(nuevoSueldo) {
-		sueldo = sueldo + nuevoSueldo
+		sueldo = nuevoSueldo
 	}
 	
 	method vender(cantidad) {
 		gimenez.fondo(cantidad * 15) ; gimenez.empanadasVendidas(cantidad * 15)
-	} 
-	
-	method totalCobrado() {
-		return totalSueldo
 	}
 	
-	method totalSueldo(sueldoNuevo) {
-		totalSueldo = totalSueldo + sueldoNuevo
+	method totalCobrado() {
+		return totalCobrado
+	}
+	
+	method totalCobrado(suma) {
+		totalCobrado += suma
 	}
 }
 
@@ -53,11 +65,10 @@ object gimenez {
 	
 	method pagarSueldo(empleado) {
 		if (empleado == galvan) {
-			galvan.sueldo(20000); fondo -= 20000
+			galvan.sueldo(15000); fondo -= 15000 
 		}
 		else {
-			baigorria.sueldo(empanadasVendidas); baigorria.totalSueldo(empanadasVendidas) ;
-			fondo -= empanadasVendidas; empanadasVendidas -=empanadasVendidas
+			baigorria.sueldo(empanadasVendidas); fondo -= empanadasVendidas; baigorria.totalCobrado(empanadasVendidas); empanadasVendidas -= empanadasVendidas
 		}
 	}
 }
