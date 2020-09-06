@@ -1,18 +1,33 @@
 object galvan {
 	var sueldo = 0
+	var dinero = 0
 	var deuda = 0
 	
-	method sueldo() {
-		return (sueldo)
-	}
+    method cobrarSueldo() {
+    	sueldo = 20000;
+    	if (deuda >= sueldo) {
+    		deuda -= sueldo;
+    		sueldo -= sueldo
+    	}
+    	else {
+    		deuda = (deuda - sueldo).abs();
+    		sueldo = deuda; 
+    		deuda -= deuda;
+    		dinero += sueldo;
+    		sueldo -= sueldo
+    	}
+    }
+    
+    method sueldo() {
+    	return dinero
+    }
 	
-	method sueldo(nuevoSueldo) {
-		sueldo = nuevoSueldo
-	}
 	
 	method gastar(monto) {
-		if (monto > sueldo) {
-			sueldo = (sueldo - monto).abs(); deuda += sueldo; sueldo -= sueldo
+		if (monto > dinero) {
+			dinero = (dinero - monto).abs();
+			deuda += dinero;
+			dinero -= dinero
 		}
 		else {sueldo -= monto}
 	}
@@ -23,52 +38,41 @@ object galvan {
 }  
 
 object baigorria  {
-	var sueldo = 0
 	var totalCobrado = 0
-	
-	method sueldo() {
-		return (sueldo)
-	}
-	
-	method sueldo(nuevoSueldo) {
-		sueldo = nuevoSueldo
-	}
+	var empanadasVendidas = 0
 	
 	method vender(cantidad) {
-		gimenez.fondo(cantidad * 15) ; gimenez.empanadasVendidas(cantidad * 15)
+		gimenez.fondo(cantidad * 15)
+		empanadasVendidas = cantidad
 	}
+	
+	method sueldo() {
+		return empanadasVendidas * 15
+	} 
 	
 	method totalCobrado() {
 		return totalCobrado
 	}
 	
-	method totalCobrado(suma) {
-		totalCobrado += suma
+	method cobrarSueldo() {
+		totalCobrado += self.sueldo()
+		
 	}
 }
 
 object gimenez {
-	var fondo = 288000
-	var empanadasVendidas = 0
+	var fondo = 300000
 	
 	method fondo() {
 		return (fondo)
 	}		
 	
-	method empanadasVendidas(entrada) {
-		empanadasVendidas = empanadasVendidas + entrada
-	}
-	
 	method fondo(entrada) {
-		fondo = fondo + entrada
+		fondo += entrada
 	}
 	
 	method pagarSueldo(empleado) {
-		if (empleado == galvan) {
-			galvan.sueldo(15000); fondo -= 15000 
-		}
-		else {
-			baigorria.sueldo(empanadasVendidas); fondo -= empanadasVendidas; baigorria.totalCobrado(empanadasVendidas); empanadasVendidas -= empanadasVendidas
-		}
+		empleado.cobrarSueldo()
+		fondo -= empleado.sueldo()
 	}
 }
